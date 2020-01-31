@@ -27,7 +27,7 @@ us-east-1: ami-0e193d0c4cf2f6ad5
 
 
 ## Notes
-The ** source base** [**Ubuntu AMI**](https://console.aws.amazon.com/ec2/home?region=us-east-1#launchAmi=ami-07ebfd5b3428b6f4d) extended herein are in AWS `us-east-1` and were already provided by [Canonical Ltd (may be found listed at-this-link)](https://cloud-images.ubuntu.com/locator/ec2/); AMI-ID's for different regions of interest to you can be found therein.
+The **source base** [**Ubuntu AMI**](https://console.aws.amazon.com/ec2/home?region=us-east-1#launchAmi=ami-07ebfd5b3428b6f4d) extended herein are in AWS `us-east-1` and were already provided by [Canonical Ltd (may be found listed at-this-link)](https://cloud-images.ubuntu.com/locator/ec2/); AMI-ID's for different regions of interest to you can be found therein.
 
 **Network** (VPC, SG) and **SSH** consideration should be made where intending to extending this template toward proper usage beyond a mere practise / training exercise. For example - `associate_public_ip_address` that's currently set will expose the EC2 instance over public / WAN IP during the build stages (before auto termination) and what's more no `ssh_keypair_name` or `ssh_private_key_file` are set (typical use cases) - for more information see the [Packer - AMI Builder (EBS backed) - documentation](https://www.packer.io/docs/builders/amazon-ebs.html#communicator-configuration)
 
