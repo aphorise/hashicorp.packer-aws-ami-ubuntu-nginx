@@ -1,0 +1,47 @@
+{
+"_comment" : "Packer Template using AWS EBS AMI of Ubuntu 18.04 LTS with Nginx (2020.01)",
+"variables":
+{
+	"name": "ubuntu18.04",
+	"build_name": "{{user `name`}}_nginx64",
+	"aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
+	"aws_secret_key": "{{env `AWS_SECRET_KEY`}}",
+	"aws_ec2_type": "t2.micro",
+	"aws_region": "us-east-1",
+	"aws_ami_base": "ami-07ebfd5b3428b6f4d",
+	"aws_ssh_user": "ubuntu",
+	"aws_userdata": "./os-cc-ud.sh"
+},
+"builders":
+[{
+	"type": "amazon-ebs",
+	"name": "{{user `build_name`}}",
+	"access_key": "{{user `aws_access_key`}}",
+	"secret_key": "{{user `aws_secret_key`}}",
+	"region": "{{user `aws_region`}}",
+	"source_ami": "{{user `aws_ami_base`}}",
+	"instance_type": "{{user `aws_ec2_type`}}",
+	"ssh_username": "{{user `aws_ssh_user`}}",
+	"ssh_interface": "public_ip",
+	"temporary_key_pair_name": "{{user `build_name`}}",
+	"associate_public_ip_address": true,
+	"ami_name": "{{user `build_name`}}",
+	"tags":
+	{
+		"Name": "{{user `build_name`}}",
+        "OS_Version": "Ubuntu",
+        "Comment": "An Ubuntu 18.04 LTS image with NGiNX."
+	},
+	"user_data_file": "{{user `aws_userdata`}}"
+}],
+"provisioners":
+[{
+	"type": "shell",
+	"inline":
+	[
+		"echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections ; # REMOVE WARNINGS of debconf: unable to initialize frontend: Dialog",
+		"sudo apt-get -q update ;",
+		"sudo apt-get -yq install nginx ;"
+	]
+}]
+}
